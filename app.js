@@ -26,7 +26,7 @@ const CONFIG = {
         // Initial zoom level (0-8, higher = more zoomed in)
         INITIAL_ZOOM: 2,
         // Min/max zoom
-        MIN_ZOOM: 0,
+        MIN_ZOOM: -4,
         MAX_ZOOM: 8,
     }
 };
@@ -45,6 +45,21 @@ const CATEGORIES = {
     other: { name: 'Other', icon: '❓', color: '#7f8c8d' }
 };
 
+const BIOMES = {
+    plains: { name: 'Plains', icon: '🌿', color: '#7cba4c' },
+    woodlands: { name: 'Woodlands', icon: '🌲', color: '#2d5a27' },
+    caves: { name: 'Caves', icon: '🦇', color: '#4a4a4a' },
+    mountains: { name: 'Mountains', icon: '⛰️', color: '#8b9dc3' },
+    swamps: { name: 'Swamps', icon: '🐸', color: '#5c6b4a' },
+    sandy: { name: 'Sandy Areas', icon: '🏜️', color: '#d4b96c' },
+    water: { name: 'Water Areas', icon: '🌊', color: '#3498db' },
+    nether_biome: { name: 'Nether Biomes', icon: '🔥', color: '#a83232' },
+    end_biome: { name: 'End Biomes', icon: '🌌', color: '#6b5b95' }
+};
+
+// Combined for lookups
+const ALL_CATEGORIES = { ...CATEGORIES, ...BIOMES };
+
 // =============================================================================
 // APP STATE
 // =============================================================================
@@ -53,7 +68,7 @@ let map = null;
 let markers = [];
 let locations = [];
 let currentDimension = 'overworld';
-let activeCategories = new Set(Object.keys(CATEGORIES));
+let activeCategories = new Set(Object.keys(ALL_CATEGORIES));
 
 // =============================================================================
 // MAP INITIALIZATION
@@ -284,7 +299,7 @@ function updateMap() {
 
     // Add markers for each location
     filtered.forEach(loc => {
-        const category = CATEGORIES[loc.category] || CATEGORIES.other;
+        const category = ALL_CATEGORIES[loc.category] || ALL_CATEGORIES.other;
 
         // Create custom icon
         const icon = L.divIcon({
@@ -304,7 +319,7 @@ function updateMap() {
 }
 
 function createPopupContent(loc) {
-    const category = CATEGORIES[loc.category] || CATEGORIES.other;
+    const category = ALL_CATEGORIES[loc.category] || ALL_CATEGORIES.other;
     return `
         <div class="popup-content">
             <h3 class="popup-name">${category.icon} ${loc.name}</h3>
@@ -328,13 +343,42 @@ function updateCategoryFilters() {
     const container = document.getElementById('category-filters');
     container.innerHTML = '';
 
-    Object.entries(CATEGORIES).forEach(([key, cat]) => {
-        const btn = document.createElement('button');
-        btn.className = `category-filter ${activeCategories.has(key) ? 'active' : ''}`;
-        btn.textContent = `${cat.icon} ${cat.name}`;
-        btn.onclick = () => toggleCategory(key);
-        container.appendChild(btn);
-    });
+    // Create filter buttons for a group
+    function createFilterButtons(categories, groupContainer) {
+        Object.entries(categories).forEach(([key, cat]) => {
+            const btn = document.createElement('button');
+            btn.className = `category-filter ${activeCategories.has(key) ? 'active' : ''}`;
+            btn.textContent = `${cat.icon} ${cat.name}`;
+            btn.onclick = () => toggleCategory(key);
+            groupContainer.appendChild(btn);
+        });
+    }
+
+    // Locations group
+    const locationsGroup = document.createElement('div');
+    locationsGroup.className = 'filter-group';
+    const locationsLabel = document.createElement('div');
+    locationsLabel.className = 'filter-group-label';
+    locationsLabel.textContent = 'Locations';
+    locationsGroup.appendChild(locationsLabel);
+    const locationsButtons = document.createElement('div');
+    locationsButtons.className = 'filter-group-buttons';
+    createFilterButtons(CATEGORIES, locationsButtons);
+    locationsGroup.appendChild(locationsButtons);
+    container.appendChild(locationsGroup);
+
+    // Biomes group
+    const biomesGroup = document.createElement('div');
+    biomesGroup.className = 'filter-group';
+    const biomesLabel = document.createElement('div');
+    biomesLabel.className = 'filter-group-label';
+    biomesLabel.textContent = 'Biomes';
+    biomesGroup.appendChild(biomesLabel);
+    const biomesButtons = document.createElement('div');
+    biomesButtons.className = 'filter-group-buttons';
+    createFilterButtons(BIOMES, biomesButtons);
+    biomesGroup.appendChild(biomesButtons);
+    container.appendChild(biomesGroup);
 }
 
 function toggleCategory(category) {
@@ -363,7 +407,7 @@ function updateLocationList() {
     }
 
     filtered.forEach(loc => {
-        const category = CATEGORIES[loc.category] || CATEGORIES.other;
+        const category = ALL_CATEGORIES[loc.category] || ALL_CATEGORIES.other;
         const item = document.createElement('div');
         item.className = 'location-item';
         item.innerHTML = `

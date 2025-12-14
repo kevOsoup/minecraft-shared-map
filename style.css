@@ -202,9 +202,30 @@ body {
 /* Category filters */
 #category-filters {
     display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.filter-group-label {
+    font-size: 14px;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #333;
+}
+
+.filter-group-buttons {
+    display: flex;
     flex-wrap: wrap;
     gap: 5px;
-    margin-bottom: 15px;
 }
 
 .category-filter {
@@ -284,6 +305,17 @@ body {
 .marker-landmark { background: #2980b9; }
 .marker-danger { background: #c0392b; }
 .marker-other { background: #7f8c8d; }
+
+/* Biome colors */
+.marker-plains { background: #7cba4c; }
+.marker-woodlands { background: #2d5a27; }
+.marker-caves { background: #4a4a4a; }
+.marker-mountains { background: #8b9dc3; }
+.marker-swamps { background: #5c6b4a; }
+.marker-sandy { background: #d4b96c; }
+.marker-water { background: #3498db; }
+.marker-nether_biome { background: #a83232; }
+.marker-end_biome { background: #6b5b95; }
 
 /* Loading state */
 .loading {
