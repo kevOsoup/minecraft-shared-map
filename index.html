@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Shared Map</title>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <!-- Google Fonts - Minecraft-style font -->
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
+    <!-- Our styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header id="header">
+            <h1>Minecraft Shared Map</h1>
+            <div id="controls">
+                <div id="dimension-selector">
+                    <button class="dim-btn active" data-dimension="overworld">Overworld</button>
+                    <button class="dim-btn" data-dimension="nether">Nether</button>
+                    <button class="dim-btn" data-dimension="end">End</button>
+                </div>
+                <div id="coords-display">
+                    X: <span id="coord-x">0</span> | Z: <span id="coord-z">0</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Map container -->
+        <div id="map"></div>
+
+        <!-- Sidebar for location list -->
+        <div id="sidebar">
+            <div id="sidebar-toggle">&#9776;</div>
+            <div id="sidebar-content">
+                <h2>Locations</h2>
+                <div id="category-filters"></div>
+                <div id="location-list"></div>
+            </div>
+        </div>
+
+        <!-- Location popup template (hidden) -->
+        <div id="popup-template" style="display: none;">
+            <div class="popup-content">
+                <h3 class="popup-name"></h3>
+                <p class="popup-category"></p>
+                <p class="popup-coords"></p>
+                <p class="popup-notes"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Our app -->
+    <script src="app.js"></script>
+</body>
+</html>
